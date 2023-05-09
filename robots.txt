@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://genclerinbaskani.com.tr/tr/sitemap.xml
+Sitemap: https://genclerinbaskani.com.tr/tr/sitemapindex.xml
