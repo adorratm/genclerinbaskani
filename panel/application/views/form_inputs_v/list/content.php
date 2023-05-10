@@ -29,8 +29,8 @@
 					<th class="order"><i class="fa fa-reorder"></i></th>
 					<th class="order"><i class="fa fa-reorder"></i></th>
 					<th class="w50">#id</th>
-					<th>Başlık</th>
-					<th>Form İçeriği Kategorisi</th>
+					<th>Form İçeriği</th>
+					<th>Form İçeriği Formu</th>
 					<th>Durumu</th>
 					<th>Güncelleme Tarihi</th>
 					<th class="nosort">İşlem</th>
@@ -108,6 +108,14 @@
 						tokenSeparators: [',', ' '],
 						multiple: false
 					});
+					$(".tagsInputAuto").select2({
+						placeholder: 'Seçenekleri Virgül İle Ayırabilirsiniz.',
+						width: 'resolve',
+						theme: "classic",
+						tags: true,
+						tokenSeparators: [','],
+						multiple: true
+					});
 				});
 			});
 			openModal("#formInputModal");
@@ -141,6 +149,14 @@
 						tags: false,
 						tokenSeparators: [',', ' '],
 						multiple: false
+					});
+					$(".tagsInputAuto").select2({
+						placeholder: 'Seçenekleri Virgül İle Ayırabilirsiniz.',
+						width: 'resolve',
+						theme: "classic",
+						tags: true,
+						tokenSeparators: [','],
+						multiple: true
 					});
 				});
 			});

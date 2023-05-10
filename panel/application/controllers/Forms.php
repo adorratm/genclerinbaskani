@@ -43,7 +43,7 @@ class Forms extends MY_Controller
                 </div>
             </div>';
                 $checkbox = '<div class="custom-control custom-switch"><input data-id="' . $item->id . '" data-url="' . base_url("forms/isActiveSetter/{$item->id}") . '" data-status="' . ($item->isActive == 1 ? "checked" : null) . '" id="customSwitch' . $i . '" type="checkbox" ' . ($item->isActive == 1 ? "checked" : null) . ' class="my-check custom-control-input" >  <label class="custom-control-label" for="customSwitch' . $i . '"></label></div>';
-                $data[] = [$item->rank, '<i class="fa fa-arrows" data-id="' . $item->id . '"></i>', $item->id, $item->title, $checkbox, turkishDate("d F Y, l H:i:s", $item->createdAt), turkishDate("d F Y, l H:i:s", $item->updatedAt), $proccessing];
+                $data[] = [$item->rank, '<i class="fa fa-arrows" data-id="' . $item->id . '"></i>', $item->id, $item->title, $item->lang, $checkbox, turkishDate("d F Y, l H:i:s", $item->createdAt), turkishDate("d F Y, l H:i:s", $item->updatedAt), $proccessing];
             endforeach;
         endif;
         $output = [
@@ -67,7 +67,7 @@ class Forms extends MY_Controller
     public function save()
     {
         $data = rClean($this->input->post());
-        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] != "top_id") :
+        if (checkEmpty($data)["error"]) :
             $key = checkEmpty($data)["key"];
             echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Form Kaydı Yapılırken Hata Oluştu. \"{$key}\" Bilgisini Doldurduğunuzdan Emin Olup Tekrar Deneyin."]);
         else :
@@ -102,7 +102,6 @@ class Forms extends MY_Controller
                 endif;
             endif;
             $data["seo_url"] = seo($data["title"]);
-            $data["top_id"] = !empty($data["top_id"]) ? $data["top_id"] : 0;
             $data["isActive"] = 1;
             $data["rank"] = $getRank + 1;
             $insert = $this->form_model->add($data);

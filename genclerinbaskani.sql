@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2023 at 04:29 PM
+-- Generation Time: May 10, 2023 at 04:17 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -428,6 +428,13 @@ CREATE TABLE `forms` (
   `updatedAt` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `forms`
+--
+
+INSERT INTO `forms` (`id`, `title`, `seo_url`, `img_url`, `home_url`, `banner_url`, `lang`, `rank`, `isActive`, `createdAt`, `updatedAt`) VALUES
+(1, 'Gönüllü Gençlik Topluluğu Kayıt Formu', 'gonullu-genclik-toplulugu-kayit-formu', NULL, NULL, NULL, 'tr', 1, 1, '2023-05-10 07:10:44', '2023-05-10 07:10:44');
+
 -- --------------------------------------------------------
 
 --
@@ -457,16 +464,42 @@ CREATE TABLE `form_images` (
 
 CREATE TABLE `form_inputs` (
   `id` int(11) NOT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
-  `seo_url` varchar(255) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
+  `form_title` varchar(255) DEFAULT NULL,
+  `form_main_title` varchar(255) DEFAULT NULL,
+  `form_type` varchar(255) DEFAULT NULL,
+  `form_options` longtext DEFAULT NULL,
+  `form_default_value` varchar(255) DEFAULT NULL,
+  `form_other_value` varchar(255) DEFAULT NULL,
+  `form_required` varchar(255) DEFAULT 'required',
+  `column_length` int(11) DEFAULT 6,
+  `form_id` int(11) DEFAULT NULL,
   `lang` char(2) NOT NULL DEFAULT 'tr',
   `rank` bigint(20) NOT NULL DEFAULT 1,
   `isActive` tinyint(1) NOT NULL DEFAULT 1,
   `createdAt` timestamp NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `form_inputs`
+--
+
+INSERT INTO `form_inputs` (`id`, `form_title`, `form_main_title`, `form_type`, `form_options`, `form_default_value`, `form_other_value`, `form_required`, `column_length`, `form_id`, `lang`, `rank`, `isActive`, `createdAt`, `updatedAt`) VALUES
+(1, 'Adınız', 'name', 'text', NULL, NULL, NULL, 'required', 6, 1, 'tr', 1, 1, '2023-05-10 12:00:42', '2023-05-10 12:01:29'),
+(2, 'Soyadınız', 'surname', 'text', NULL, NULL, NULL, 'required', 6, 1, 'tr', 2, 1, '2023-05-10 12:04:59', '2023-05-10 12:04:59'),
+(3, 'Email Adresiniz', 'email', 'email', NULL, NULL, NULL, 'required', 6, 1, 'tr', 3, 1, '2023-05-10 12:00:42', '2023-05-10 13:18:56'),
+(4, 'Telefon Numaranız', 'phone', 'tel', NULL, NULL, NULL, 'required', 6, 1, 'tr', 4, 1, '2023-05-10 12:05:45', '2023-05-10 12:05:45'),
+(5, 'Doğum Tarihiniz', 'birthdate', 'date', NULL, NULL, NULL, 'required', 6, 1, 'tr', 5, 1, '2023-05-10 12:05:28', '2023-05-10 13:20:53'),
+(6, 'Cinsiyetiniz', 'gender', 'select_dropdown', 'Kadın,Erkek', NULL, NULL, 'required', 6, 1, 'tr', 6, 1, '2023-05-10 12:06:17', '2023-05-10 13:20:57'),
+(7, 'Okuyor Musunuz?', 'school_status', 'select_dropdown', 'İlköğretim,Ortaöğretim,Lise,Önlisans,Lisans,Yüksek Lisans,Doktora', 'Lisans', NULL, 'required', 6, 1, 'tr', 7, 1, '2023-05-10 12:16:50', '2023-05-10 13:21:06'),
+(8, 'Okulunuzun Adı', 'school', 'text', NULL, '', NULL, '', 6, 1, 'tr', 8, 1, '2023-05-10 12:18:44', '2023-05-10 13:21:21'),
+(9, 'Çalışıyor Musunuz?', 'work_status', 'select_dropdown', 'Evet,Hayır', 'Evet', NULL, 'required', 6, 1, 'tr', 9, 1, '2023-05-10 12:32:51', '2023-05-10 13:22:00'),
+(10, 'Çalıştığınız Firmanın Adı', 'work', 'text', NULL, '', NULL, '', 6, 1, 'tr', 10, 1, '2023-05-10 12:33:10', '2023-05-10 13:22:03'),
+(11, 'İlçe Seçiniz', 'district', 'district', NULL, NULL, NULL, 'required', 6, 1, 'tr', 11, 1, '2023-05-10 12:44:22', '2023-05-10 13:22:18'),
+(12, 'Mahalle Seçiniz', 'quarter', 'quarter', NULL, NULL, NULL, 'required', 6, 1, 'tr', 12, 1, '2023-05-10 12:44:49', '2023-05-10 13:22:16'),
+(13, 'Hobileriniz', 'hobbies', 'multiple_checkbox', 'Futbol,Basketbol,Voleybol,Satranç,Bowling,Yüzme,Bisiklet,Doğa,Konser,Sinema,Tiyatro,Paten,Diğer', '', 'open', '', 6, 1, 'tr', 13, 1, '2023-05-10 12:48:21', '2023-05-10 13:22:35'),
+(14, 'Sevdiğiniz Müzik Tarzı', 'music', 'multiple_checkbox', 'Türkçe Pop,Rap Müzik,Yabancı Pop,Rock Müzik,Elektro Müzik,Heavy Metal,Arabesk - Fantazi,Türkü,Diğer', '', 'open', '', 6, 1, 'tr', 14, 1, '2023-05-10 13:05:48', '2023-05-10 13:22:34'),
+(15, 'En Çok Kullandığınız Sosyal Medya Platformları', 'social_media', 'multiple_checkbox', 'Instagram,Facebook,Twitter,TikTok,Youtube,Telegram,Twitch,Diğer', NULL, 'open', NULL, 6, 1, 'tr', 15, 1, '2023-05-10 13:08:14', '2023-05-10 13:22:32');
 
 -- --------------------------------------------------------
 
@@ -1385,7 +1418,7 @@ ALTER TABLE `files`
 -- AUTO_INCREMENT for table `forms`
 --
 ALTER TABLE `forms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `form_images`
@@ -1397,7 +1430,7 @@ ALTER TABLE `form_images`
 -- AUTO_INCREMENT for table `form_inputs`
 --
 ALTER TABLE `form_inputs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `galleries`
