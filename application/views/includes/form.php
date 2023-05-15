@@ -1,5 +1,34 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php $forms = $this->general_model->get_all("forms", null, "rank ASC", ["isActive" => 1]); ?>
+<?php $cities = [] ?>
+<?php $allCities = $this->general_model->get_all("cities", "city_id,city", null, ["city_id" => 41]) ?>
+<?php $citiesId = [] ?>
+<?php if (!empty($allCities)) : ?>
+    <?php foreach ($allCities as $aCKey => $aCValue) : ?>
+        <?php if (!in_array($aCValue->city, $cities)) : ?>
+            <?php $citiesId[] = $aCValue->city_id ?>
+            <?php $cities[$aCValue->city] = $aCValue->city ?>
+        <?php endif ?>
+    <?php endforeach ?>
+<?php endif ?>
+<?php $districtsWquarters = [] ?>
+<?php $districts = []; ?>
+<?php $allDistricts = $this->general_model->get_all("districts", "district_id,district", null, [], [], [], [], ["cities_id" => $citiesId]) ?>
+<?php if (!empty($allDistricts)) : ?>
+    <?php foreach ($allDistricts as $aDKey => $aDValue) : ?>
+        <?php if (!in_array($aDValue->district, $districts)) : ?>
+            <?php $districts[$aDValue->district] = $aDValue->district ?>
+        <?php endif ?>
+    <?php endforeach ?>
+<?php endif ?>
+<?php $allQuarters = $this->general_model->get_all("quarters", "districts.district,quarters.quarter_id,quarters.quarter,quarters.neighborhoods_id", null, ["cities.city_id" => 41], [], ["neighborhoods" => ["neighborhoods.neighborhood_id = neighborhoods_id", "LEFT"], "districts" => ["districts.district_id = neighborhoods.districts_id", "LEFT"], "cities" => ["cities.city_id = districts.cities_id", "LEFT"]], [], [], true) ?>
+<?php if (!empty($allQuarters)) : ?>
+    <?php foreach ($allQuarters as $aQKey => $aQValue) : ?>
+        <?php $districtsWquarters[$aQValue->district][$aQValue->quarter] = $aQValue->quarter ?>
+    <?php endforeach ?>
+<?php endif ?>
+
+
 <?php if (!empty($forms)) : ?>
     <?php foreach ($forms as $k => $v) : ?>
         <?php $form_inputs = $this->general_model->get_all("form_inputs", null, "rank ASC", ["isActive" => 1, "form_id" => $v->id]) ?>
@@ -31,24 +60,54 @@
                                             <div class="d-flex flex-wrap align-items-center align-self-center align-content-center">
                                                 <?php $arrOfItems = @explode(",", $value->form_options); ?>
                                                 <?php foreach ($arrOfItems as $aKey => $aValue) : ?>
-                                                    <div class="form-check me-1">
+                                                    <div class="form-check me-2">
                                                         <?php $js = 'onclick="triggerOther(this)"' ?>
                                                         <?= form_checkbox($value->form_main_title . ($value->form_type == "multiple_checkbox" ? "[]" : null), $aValue, null, 'class="form-check-input" id="' . $value->form_main_title . $aKey . '"' . ($aValue == "Diğer" ? $js : null)) ?>
-                                                        <label for="<?= $value->form_main_title . $key ?>" class="form-check-label my-auto"><?= $aValue ?></label>
+                                                        <?= form_label($aValue, $value->form_main_title . $aKey, 'class="form-check-label my-auto"') ?>
                                                     </div>
                                                     <?php if ($aValue == "Diğer") : ?>
                                                         <?php if (!empty($value->form_other_value)) : ?>
-                                                            <?= form_input($value->form_main_title, null, 'class="form-control w-auto" placeholder="' . $value->form_title . '" id="' . $value->form_main_title . $key . '"') ?>
+                                                            <?= form_input($value->form_main_title, null, 'class="form-control w-auto d-none" placeholder="' . $value->form_title . '" id="' . $value->form_main_title . $key . '"') ?>
                                                         <?php endif ?>
                                                     <?php endif ?>
                                                 <?php endforeach ?>
                                             </div>
                                         <?php endif ?>
-                                        <?php if ($value->form_type == "text" || $value->form_type == "number" || $value->form_type == "email" || $value->form_type == "password" || $value->form_type == "date" || $value->form_type == "time" || $value->form_type == "datetime") : ?>
-                                            <?= form_input($value->form_main_title, $value->form_default_value, 'class="form-control" id="' . $value->form_main_title . $key . '"') ?>
+                                        <?php if ($value->form_type == "radio_btn") : ?>
+                                            <div class="d-flex flex-wrap align-items-center align-self-center align-content-center">
+                                                <?php $arrOfItems = @explode(",", $value->form_options); ?>
+                                                <?php foreach ($arrOfItems as $aKey => $aValue) : ?>
+                                                    <div class="form-check me-2">
+                                                        <?php $js = 'onclick="triggerOther(this)"' ?>
+                                                        <?= form_radio($value->form_main_title, $aValue, null, 'class="form-check-input" id="' . $value->form_main_title . $aKey . '"' . ($aValue == "Diğer" ? $js : null)) ?>
+                                                        <?= form_label($aValue, $value->form_main_title . $aKey, 'class="form-check-label my-auto"') ?>
+                                                    </div>
+                                                    <?php if ($aValue == "Diğer") : ?>
+                                                        <?php if (!empty($value->form_other_value)) : ?>
+                                                            <?= form_input($value->form_main_title, null, 'class="form-control w-auto d-none" placeholder="' . $value->form_title . '" id="' . $value->form_main_title . $key . '"') ?>
+                                                        <?php endif ?>
+                                                    <?php endif ?>
+                                                <?php endforeach ?>
+                                            </div>
                                         <?php endif ?>
-                                        <?php if ($value->form_type == "textarea") : ?>
+                                        <?php if ($value->form_type == "text" || $value->form_type == "tel" || $value->form_type == "email" || $value->form_type == "number" || $value->form_type == "date" || $value->form_type == "time" || $value->form_type == "datetime-local") : ?>
+                                            <?= form_input($value->form_main_title, $value->form_default_value, ' placeholder="' . $value->form_title . '" type=' . $value->form_type . ' class="form-control" id="' . $value->form_main_title . $key . '"') ?>
+                                        <?php endif ?>
+                                        <?php if ($value->form_type == "text_area") : ?>
                                             <?= form_textarea($value->form_main_title, $value->form_default_value, 'class="form-control" id="' . $value->form_main_title . $key . '"') ?>
+                                        <?php endif ?>
+                                        <?php if ($value->form_type == "file") : ?>
+                                            <div class="input-group">
+                                                <?= form_upload($value->form_main_title, $value->form_default_value, '') ?>
+                                                <?= form_label($value->form_title, $value->form_main_title, 'class="form-control"') ?>
+                                            </div>
+                                        <?php endif ?>
+                                        <?php if ($value->form_type == "district") : ?>
+                                            <?php $js = 'onchange="changeDistrict(this)"' ?>
+                                            <?= form_dropdown($value->form_main_title, $districts, $value->form_default_value, 'class="form-control districtInput" ' . $js) ?>
+                                        <?php endif ?>
+                                        <?php if ($value->form_type == "quarter") : ?>
+                                            <?= form_dropdown($value->form_main_title, $districtsWquarters, $value->form_default_value, 'class="form-control quarterInput"') ?>
                                         <?php endif ?>
                                         <?php if ($value->form_type == "hidden") : ?>
                                             <?= form_hidden($value->form_main_title . "[]", $value->form_default_value) ?>
@@ -57,7 +116,7 @@
                                     </div>
                                 <?php endforeach ?>
                                 <div class="last-form-group-continue">
-                                    <a href="javascript:void(0)" class="btn btn-green-pro makeOffer" data-url="<?= base_url() ?>"><?= lang("submit") ?></a>
+                                    <?= form_submit('mysubmit', lang("submitForm"), 'class="btn btn-green-pro makeOffer" data-url="' . base_url() . '"'); ?>
                                     <div class="clearfix"></div>
                                 </div>
                             </div>
@@ -74,17 +133,30 @@
 
 
 <script>
-    window.addEventListener('DOMContentLoaded', function() {
-        $(document).ready(function() {
-            function triggerOther(e) {
-                if ($(e).is(":checked")) {
-                    $(e).parent().parent().find("input[type='text']").css("display", "block");
-                    $(e).parent().parent().find("input[type='text']").attr("required", true);
-                } else {
-                    $(e).parent().parent().find("input[type='text']").css("display", "none");
-                    $(e).parent().parent().find("input[type='text']").attr("required", false);
-                }
-            }
-        });
+    window.addEventListener('DOMContentLoaded', () => {
+        $(".districtInput").trigger("change");
     });
+
+    function triggerOther(e) {
+        if ($(e).is(":checked")) {
+            $(e).parent().parent().find("input[type='text']").removeClass("d-none");
+            $(e).parent().parent().find("input[type='text']").prop("required", true);
+        } else {
+            $(e).parent().parent().find("input[type='text']").addClass("d-none");
+            $(e).parent().parent().find("input[type='text']").prop("required", false);
+        }
+    }
+
+    function changeDistrict(e) {
+        let district = $(e).val();
+        let quarters = <?= json_encode($districtsWquarters) ?>;
+        let html = "";
+        html += "<optgroup label='" + district + "'>";
+        for (let i = 0; i < Object.entries(quarters[district]).length; i++) {
+            html += '<option value="' + Object.entries(quarters[district])[i][1] + '">' + Object.entries(quarters[district])[i][1] + '</option>';
+        }
+        html += "</optgroup>";
+        console.log(quarters[district]);
+        $(".quarterInput").html(html);
+    }
 </script>
