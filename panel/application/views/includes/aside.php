@@ -69,13 +69,13 @@
                     </li>
                 <?php } ?>
                 <?php if (isAllowedViewModule("forms")) { ?>
-                    <li class="nav-item <?= ($this->uri->segment(1) == "forms") || ($this->uri->segment(1) == "form_inputs") ? "active" : "" ?>">
-                        <a class="nav-link <?= ($this->uri->segment(1) == "forms") || ($this->uri->segment(1) == "form_inputs") ? "active" : "" ?>" href="javascript:void(0);" data-toggle="collapse" data-target="#blogs_nav">
+                    <li class="nav-item <?= ($this->uri->segment(1) == "forms") || ($this->uri->segment(1) == "form_inputs") || ($this->uri->segment(1) == "form_submissions") ? "active" : "" ?>">
+                        <a class="nav-link <?= ($this->uri->segment(1) == "forms") || ($this->uri->segment(1) == "form_inputs") || ($this->uri->segment(1) == "form_submissions") ? "active" : "" ?>" href="javascript:void(0);" data-toggle="collapse" data-target="#forms_nav">
                             <i class="fa fa-list"></i>
                             <span class="nav-link-text">Form İşlemleri</span>
                         </a>
-                        <ul id="blogs_nav" class="nav flex-column collapse  <?= ($this->uri->segment(1) == "form_inputs") || ($this->uri->segment(1) == "forms") ? "show" : "" ?> collapse-level-1">
-                            <li class="nav-item <?= ($this->uri->segment(1) == "form_inputs") || ($this->uri->segment(1) == "forms") ? "active" : "" ?>">
+                        <ul id="forms_nav" class="nav flex-column collapse  <?= ($this->uri->segment(1) == "form_inputs") || ($this->uri->segment(1) == "forms") || ($this->uri->segment(1) == "form_submissions") ? "show" : "" ?> collapse-level-1">
+                            <li class="nav-item <?= ($this->uri->segment(1) == "form_inputs") || ($this->uri->segment(1) == "forms") || ($this->uri->segment(1) == "form_submissions") ? "active" : "" ?>">
                                 <ul class="nav flex-column">
                                     <li class="nav-item  <?= ($this->uri->segment(1) == "forms") ? "active" : "" ?>">
                                         <a class="nav-link <?= ($this->uri->segment(1) == "forms") ? "active" : "" ?>" href="<?= base_url("forms"); ?>">Formlar</a>

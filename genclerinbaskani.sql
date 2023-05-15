@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2023 at 02:17 AM
+-- Generation Time: May 15, 2023 at 03:52 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -1527,6 +1527,18 @@ INSERT INTO `forms` (`id`, `title`, `seo_url`, `img_url`, `home_url`, `banner_ur
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `forms_submissions`
+--
+
+CREATE TABLE `forms_submissions` (
+  `id` int(11) NOT NULL,
+  `form_id` int(11) DEFAULT NULL,
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`data`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `form_images`
 --
 
@@ -1579,10 +1591,10 @@ INSERT INTO `form_inputs` (`id`, `form_title`, `form_main_title`, `form_type`, `
 (3, 'Email Adresiniz', 'email', 'email', NULL, NULL, NULL, 'required', 6, 1, 'tr', 3, 1, '2023-05-10 12:00:42', '2023-05-10 13:18:56'),
 (4, 'Telefon Numaranız', 'phone', 'tel', NULL, NULL, NULL, 'required', 6, 1, 'tr', 4, 1, '2023-05-10 12:05:45', '2023-05-10 12:05:45'),
 (5, 'Doğum Tarihiniz', 'birthdate', 'date', NULL, NULL, NULL, 'required', 6, 1, 'tr', 5, 1, '2023-05-10 12:05:28', '2023-05-10 13:20:53'),
-(6, 'Cinsiyetiniz', 'gender', 'select_dropdown', 'Kadın,Erkek', NULL, NULL, 'required', 6, 1, 'tr', 6, 1, '2023-05-10 12:06:17', '2023-05-10 13:20:57'),
-(7, 'Okuyor Musunuz?', 'school_status', 'select_dropdown', 'İlköğretim,Ortaöğretim,Lise,Önlisans,Lisans,Yüksek Lisans,Doktora', 'Lisans', NULL, 'required', 6, 1, 'tr', 7, 1, '2023-05-10 12:16:50', '2023-05-10 13:21:06'),
+(6, 'Cinsiyetiniz', 'gender', 'select', 'Kadın,Erkek', NULL, NULL, 'required', 6, 1, 'tr', 6, 1, '2023-05-10 12:06:17', '2023-05-15 11:51:48'),
+(7, 'Okuyor Musunuz?', 'school_status', 'select', 'İlköğretim,Ortaöğretim,Lise,Önlisans,Lisans,Yüksek Lisans,Doktora', 'Lisans', NULL, 'required', 6, 1, 'tr', 7, 1, '2023-05-10 12:16:50', '2023-05-15 11:51:52'),
 (8, 'Okulunuzun Adı', 'school', 'text', NULL, '', NULL, '', 6, 1, 'tr', 8, 1, '2023-05-10 12:18:44', '2023-05-10 13:21:21'),
-(9, 'Çalışıyor Musunuz?', 'work_status', 'select_dropdown', 'Evet,Hayır', 'Evet', NULL, 'required', 6, 1, 'tr', 9, 1, '2023-05-10 12:32:51', '2023-05-10 13:22:00'),
+(9, 'Çalışıyor Musunuz?', 'work_status', 'select', 'Evet,Hayır', 'Evet', NULL, 'required', 6, 1, 'tr', 9, 1, '2023-05-10 12:32:51', '2023-05-15 11:51:56'),
 (10, 'Çalıştığınız Firmanın Adı', 'work', 'text', NULL, '', NULL, '', 6, 1, 'tr', 10, 1, '2023-05-10 12:33:10', '2023-05-10 13:22:03'),
 (11, 'İlçe Seçiniz', 'district', 'district', NULL, NULL, NULL, 'required', 6, 1, 'tr', 11, 1, '2023-05-10 12:44:22', '2023-05-10 13:22:18'),
 (12, 'Mahalle Seçiniz', 'quarter', 'quarter', NULL, NULL, NULL, 'required', 6, 1, 'tr', 12, 1, '2023-05-10 12:44:49', '2023-05-10 13:22:16'),
@@ -78146,7 +78158,7 @@ CREATE TABLE `user_role` (
 --
 
 INSERT INTO `user_role` (`id`, `title`, `permissions`, `isActive`, `isCover`, `rank`, `createdAt`, `updatedAt`) VALUES
-(1, 'Admin', '{\"dashboard\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"emailsettings\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"forms\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"form_inputs\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"galleries\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"menus\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"settings\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"slides\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"userop\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"users\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"user_role\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"}}', 1, 1, 1, '2020-07-22 20:58:34', '2023-05-09 14:28:58');
+(1, 'Admin', '{\"dashboard\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"emailsettings\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"forms\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"form_inputs\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"form_submissions\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"galleries\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"menus\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"settings\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"slides\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"userop\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"users\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"},\"user_role\":{\"read\":\"on\",\"write\":\"on\",\"update\":\"on\",\"delete\":\"on\"}}', 1, 1, 1, '2020-07-22 20:58:34', '2023-05-15 13:08:01');
 
 -- --------------------------------------------------------
 
@@ -78247,6 +78259,12 @@ ALTER TABLE `files`
 -- Indexes for table `forms`
 --
 ALTER TABLE `forms`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `forms_submissions`
+--
+ALTER TABLE `forms_submissions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -78457,6 +78475,12 @@ ALTER TABLE `files`
 --
 ALTER TABLE `forms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `forms_submissions`
+--
+ALTER TABLE `forms_submissions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `form_images`

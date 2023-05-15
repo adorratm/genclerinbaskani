@@ -1,6 +1,7 @@
 {
     "require": {
         "swiftmailer/swiftmailer": "^6.0",
-        "pgrimaud/instagram-user-feed": "^6.16"
+        "pgrimaud/instagram-user-feed": "^6.16",
+        "phpoffice/phpspreadsheet": "^1.20.0"
     }
 }

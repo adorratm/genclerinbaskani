@@ -39,6 +39,7 @@ class Forms extends MY_Controller
                 </button>
                 <div class="dropdown-menu rounded-0 dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item updateFormBtn" href="javascript:void(0)" data-url="' . base_url("forms/update_form/$item->id") . '"><i class="fa fa-pen mr-2"></i>Kaydı Düzenle</a>
+                    <a class="dropdown-item" href="' . base_url("form_submissions/index/$item->id") . '"><i class="fa fa-comments mr-2"></i>Form Yanıtları</a>
                     <a class="dropdown-item remove-btn" href="javascript:void(0)" data-table="formTable" data-url="' . base_url("forms/delete/$item->id") . '"><i class="fa fa-trash mr-2"></i>Kaydı Sil</a>
                 </div>
             </div>';
@@ -215,9 +216,9 @@ class Forms extends MY_Controller
                 /**
                  * Remove Category Inputs
                  */
-                $form_inputs = $this->form_input_model->get_all(["category_id" => $id]);
+                $form_inputs = $this->form_input_model->get_all(["form_id" => $id]);
                 if (!empty($form_inputs)) :
-                    $this->form_input_model->delete(["category_id" => $id]);
+                    $this->form_input_model->delete(["form_id" => $id]);
                     foreach ($form_inputs as $sKey => $sValue) :
                         $form_input_images = $this->form_image_model->get_all(["form_id" => $sValue->id]);
                         if (!empty($form_input_images)) :

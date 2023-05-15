@@ -1,5 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 // Seo
 function seo($str = null, $options = [])
 {
@@ -936,4 +939,34 @@ function curl_request($url = null, $port = null, $endpoint = null, $data = [], $
     curl_close($curl);
 
     return $result;
+}
+function exportToExcel(
+    array $data = [],
+    array $headers = [],
+    $fileName = 'data.xlsx'
+) {
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    for ($i = 0, $l = sizeof($headers); $i < $l; $i++) {
+        $sheet->setCellValueByColumnAndRow($i + 1, 1, $headers[$i]);
+    }
+
+    for ($i = 0, $l = sizeof($data); $i < $l; $i++) { // row $i
+        $j = 0;
+        foreach ($data[$i] as $k => $v) { // column $j
+            $sheet->setCellValueByColumnAndRow($j + 1, ($i + 1 + 1), $v);
+            $j++;
+        }
+    }
+
+    foreach ($sheet->getColumnIterator() as $column) {
+        $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+     }
+
+    $writer = new Xlsx($spreadsheet);
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename="' . urlencode($fileName) . '"');
+    ob_end_clean();
+    $writer->save('php://output');
 }

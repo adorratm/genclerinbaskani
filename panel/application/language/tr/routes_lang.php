@@ -24,6 +24,11 @@ $lang["(:any)/hizmetlerimiz/(:any)"] = "services/index/$2";
 $lang["(:any)/hizmetlerimiz/(:any)/(:num)"] = "services/index/$2/$3";
 $lang["(:any)/hizmetlerimiz/hizmet/(:any)"] = "services/service_detail/$2/$3";
 
+$lang["(:any)/formlar"] = "forms/index";
+$lang["(:any)/formlar/(:num)"] = "forms/index/$2";
+$lang["(:any)/formlar/(:any)"] = "forms/form_detail/$2";
+$lang["(:any)/form/(:num)"] = "forms/form_submit/$2";
+
 $lang["(:any)/galeriler"] = "galleries/index";
 $lang["(:any)/galeriler/(:num)"] = "galleries/index/$2";
 $lang["(:any)/galeriler/(:any)"] = "galleries/index/$2";
